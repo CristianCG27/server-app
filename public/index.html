@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in</title>
+</head>
+<body>
+    <h1>Sign in</h1>
+
+    <div id="g_id_onload"
+    data-use_fedcm_for_prompt="true"
+        data-client_id="16641983091-1v2t461jaaa8268tcpd8o897hda2jtru.apps.googleusercontent.com"
+        data-auto_prompt="false"
+        data-callback="handleCredentialResponse">
+    </div>
+    <div class="g_id_signin"
+        data-type="standard"
+        data-size="large"
+        data-theme="outline"
+        data-text="sign_in_with"
+        data-shape="rectangular"
+        data-logo_alignment="left">
+    </div>
+
+    <button id="google_signOut"> SignOut</button>
+
+
+
+
+
+    <script src="https://accounts.google.com/gsi/client" async></script>
+
+    <script>
+        function handleCredentialResponse(response) {
+           // decodeJwtResponse() is a custom function defined by you
+           // to decode the credential response.
+
+           //Google token
+          // console.log('id-token ',response.credential);
+
+           const body = {id_token: response.credential};
+
+
+           fetch('http://localhost:8080/api/auth/google', {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(body)
+           })
+           .then(r => r.json())
+           .then(resp => {
+            console.log(resp)
+            localStorage.setItem('email', resp.usuario.correo)
+           })
+           .catch(console.warn);
+        }
+
+        const button = document.getElementById('google_signOut');
+        button.onclick = async() =>{
+            console.log(google.accounts.id);
+            google.accounts.id.disableAutoSelect()
+            google.accounts.id.revoke(localStorage.getItem('email'), done => {
+                localStorage.clear();
+                location.reload();
+
+            });
+        }
+    </script>
+
+    
+</body>
+</html>

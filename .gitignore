@@ -1,0 +1,11 @@
+
+
+node_modules/
+notas.txt
+uploads/productos/**.*
+uploads/usuarios/**.*
+.env 
+.vscode
+
+
+
