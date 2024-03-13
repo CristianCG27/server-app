@@ -39,4 +39,4 @@ const OrdenSchema = Schema({
 
 })
 
-module.exports = model('Order', OrdenSchema);
+module.exports = model('Orden', OrdenSchema);

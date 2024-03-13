@@ -5,6 +5,7 @@ const Role = require('./role');
 const Server = require('./server');
 const Usuario = require('./usuario');
 const Orden  = require('./orden');
+const Carro = require('./carro');
 
 
 module.exports = {
@@ -13,4 +14,6 @@ module.exports = {
     Role,
     Server,
     Usuario,
+    Orden,
+    Carro
 }

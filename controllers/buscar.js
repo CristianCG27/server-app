@@ -78,6 +78,7 @@ const buscarProductos = async( termino = '', res = response ) => {
 }
 
 
+
 const buscar = (req, res=response) => {
 
     const { coleccion, termino } = req.params;

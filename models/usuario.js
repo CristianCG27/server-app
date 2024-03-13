@@ -1,6 +1,7 @@
-const { Schema, model } = require("mongoose");
+//const { Schema, model } = require("mongoose");
+const mongoose = require("mongoose");
 
-const UsuarioSchema = Schema({
+const UsuarioSchema = new mongoose.Schema({
     nombre: {
         type: String, 
         require: [true, 'El nombre es obligatorio']
@@ -30,7 +31,7 @@ const UsuarioSchema = Schema({
     google: {
         type: Boolean,
         default: false
-    },
+    }
 
 })
 
@@ -40,7 +41,7 @@ UsuarioSchema.methods.toJSON = function() {
     return usuario;
 }
 
-module.exports = model('Usuario', UsuarioSchema);
+module.exports = mongoose.model('Usuario', UsuarioSchema);
 
 
 

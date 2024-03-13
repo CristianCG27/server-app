@@ -11,7 +11,7 @@ const router = Router();
 //Obtener todas los productos - público
 router.get("/", obtenerProductos );
 
-//Obtener una de los productos - público
+//Obtener uno de los productos - público
 router.get("/:id", [
     check('id', 'No es un id de Mongo válido').isMongoId(),
     check('id').custom( existeProducto ),
@@ -20,7 +20,7 @@ router.get("/:id", [
     obtenerProducto);
 
 //Obtener producto Buscado
-router.get("/search/:key", buscarProducto)
+router.get("/search/:key", buscarProducto);
 
 //Crear un un producto - privado
 router.post("/", [

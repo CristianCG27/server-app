@@ -95,6 +95,7 @@ const borrarProducto = async (req, res = response) => {
 
   res.json(productoBorrado); //status 200
 };
+
 const buscarProducto = async (req, res = response) => {
   try {
     const { id } = req.params;
