@@ -86,10 +86,38 @@ const borrarCategoria = async(req, res = response) =>{
 
 };
 
+const buscarCategoria = async(req, res = response) =>{
+  try {
+    const { id } = req.params;
+    const results = await Categoria.aggregate(
+      [
+        {
+          $search: {
+            index: "category",
+            text: {
+              query: req.params.key,
+              path: {
+                wildcard: "*"
+              }
+            }
+          }
+        }
+      ]
+    )
+    //.populate("nombre");
+    res.json(results); //status 200
+  } catch (error) {
+    res.status(400).json("Error al obtener el producto");
+  }
+};
+
+
+
 module.exports = {
     obtenerCategorias,
     obtenerCategoria,
     crearCategoria,
     actualizarCategoria,
-    borrarCategoria
+    borrarCategoria,
+    buscarCategoria
 };

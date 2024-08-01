@@ -1,27 +1,32 @@
 const {Schema, model} = require('mongoose');
+const mongoose = require('mongoose');
 
-const ProductoSchema = Schema({
+const ProductoSchema = new mongoose.Schema({
     nombre: {
         type: String,
         required:[true, 'El nombre es obligatorio'],
         unique:true
     },
-    titulo:{
-        type: String,
+    usuario: {
+        type: Schema.Types.ObjectId,
+        ref: 'Usuario',
         required: true
-
+    },
+    precio: {
+        type: Number,
+        default: 0
     },
     categoria: {
         type: Schema.Types.ObjectId,
         ref: 'Categoria',
         required: true
     },
-    imageUrl:{
-        type: String
+    disponible:{
+        type: Boolean,
+        default: true
     },
-    oldPrice:{
-        type: String, 
-        required: true
+    img:{
+        type: [String]
     },
     tallas: {
         type: [
@@ -39,33 +44,13 @@ const ProductoSchema = Schema({
         ],
         required: true,
     },
-    estado: {
-        type: Boolean,
-        default: true,
-        required: true
-    },
-    usuario: {
-        type: Schema.Types.ObjectId,
-        ref: 'Usuario',
-        required: true
-    },
-    precio: {
-        type: Number,
-        default: 0
-    },
-    descripcion: {
-        type: String
-    },
-    disponible:{
-        type: Boolean,
-        default: true
-    },
      posicion: {
         type: [
             {
                 posx: {
                     type: String,
                     required: true,
+                    
                 },
                 posy: {
                     type: String,
@@ -74,6 +59,19 @@ const ProductoSchema = Schema({
             },
         ],
         required: true,
+    },
+    descripcion: {
+        type: String,
+        required: true
+    },
+    estado: {
+        type: Boolean,
+        default: true,
+        required: true
+    },
+    productoPara: {
+        type: String,
+        required: true
     }
 });
 
@@ -83,7 +81,7 @@ ProductoSchema.methods.toJSON = function() {
 }
 
 
-module.exports = model('Producto', ProductoSchema);
+module.exports = mongoose.model('Producto', ProductoSchema);
 
 
 

@@ -31,6 +31,8 @@ router.post("/", [
     validarCampos
     ],
     crearProducto);
+    
+
 
 //Actualizar registro por ID - privado
 router.put("/:id", [

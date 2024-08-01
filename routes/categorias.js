@@ -3,7 +3,7 @@ const { check } = require("express-validator");
 const { login, googleSignIn } = require("../controllers/auth");
 const { validarCampos } = require("../middlewares/validar-campos");
 const { validarJWT, esAdminRole } = require("../middlewares");
-const { crearCategoria, obtenerCategorias, obtenerCategoria, actualizarCategoria, borrarCategoria } = require("../controllers/categorias");
+const { crearCategoria, obtenerCategorias, obtenerCategoria, actualizarCategoria, borrarCategoria, buscarCategoria } = require("../controllers/categorias");
 const { existeCategoria } = require("../helpers/db-validators");
 
 const router = Router();
@@ -26,6 +26,10 @@ router.post("/", [
     validarCampos
     ],
     crearCategoria);
+
+//Buscar Categoria
+
+router.get("/bc/:key", buscarCategoria);
 
 //Actualizar registro por ID - privado
 router.put("/:id", [

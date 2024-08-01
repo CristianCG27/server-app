@@ -5,29 +5,34 @@ const { Producto } = require("../models");
 //borrarCategoria
 
 const obtenerProductos = async (req, res = response) => {
-  const { limite = 5, desde = 0 } = req.query;
+  const { limite = 50, desde = 0 } = req.query;
   const query = { estado: true };
 
-  const [total, productos] = await Promise.all([
-    Producto.countDocuments(query),
-    Producto.find(query)
-      .populate("usuario", "nombre")
-      .populate("categoria", "nombre")
-      .skip(Number(desde))
-      .limit(Number(limite)),
-  ]);
+  try {
+    const productos = await Producto.find().sort({ createdAt: -1})
+    res.json(productos);
+  } catch (error) {
+    res.status(500).json(error)
+  }
 
-  res.json({
-    total,
-    productos,
-  });
+  // const productos = await Promise.all([
+  //   //Producto.countDocuments(query),
+  //   Producto.find(query)
+  //     .populate("usuario", "nombre")
+  //     .populate("categoria", "nombre")
+  //     .skip(Number(desde))
+  //     .limit(Number(limite)),
+  // ]
+  // );
+
+  
 };
 
 const obtenerProducto = async (req, res = response) => {
   const { id } = req.params;
-  const producto = await Producto.findById(id)
-    .populate("usuario", "nombre")
-    .populate("categoria", "nombre");
+  const producto = await Producto.findById(id);
+    // .populate("usuario", "nombre")
+    // .populate("categoria", "nombre");
   //const {_v, createdAt, ...productoData} = producto._doc;
 
   res.json(producto);
@@ -57,10 +62,10 @@ const crearProducto = async (req, res = response) => {
 
   // Guardar categoria
   await producto.save();
-  await producto
-    .populate("usuario", "nombre")
-    .populate("categoria", "nombre")
-    .execPopulate();
+  // await producto
+  //   .populate("usuario", "nombre")
+  //   .populate("categoria", "nombre")
+  //   .execPopulate();
 
   res.status(201).json(producto);
 };
@@ -120,6 +125,8 @@ const buscarProducto = async (req, res = response) => {
     res.status(400).json("Error al obtener el producto");
   }
 };
+
+
 
 module.exports = {
   obtenerProductos,
