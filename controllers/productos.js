@@ -9,14 +9,14 @@ const obtenerProductos = async (req, res = response) => {
   const query = { estado: true };
 
   try {
-    const productos = await Producto.find().sort({ createdAt: -1})
-    res.json(productos);
+    const productos = await Producto.find(query).sort({ createdAt: -1})
+    res.status(200).json(productos);
   } catch (error) {
     res.status(500).json(error)
   }
 
   // const productos = await Promise.all([
-  //   //Producto.countDocuments(query),
+  //   Producto.countDocuments(query),
   //   Producto.find(query)
   //     .populate("usuario", "nombre")
   //     .populate("categoria", "nombre")
@@ -24,6 +24,8 @@ const obtenerProductos = async (req, res = response) => {
   //     .limit(Number(limite)),
   // ]
   // );
+
+  // res.json(productos);
 
   
 };
@@ -126,6 +128,50 @@ const buscarProducto = async (req, res = response) => {
   }
 };
 
+const actualizarPTalla = async (req, res = response) => {
+  const { n } = req.body;
+
+  if (n === 10) {
+    return res.status(200).json({ message: 'No se realizaron cambios ya que n es 10.' });
+  }
+
+  try {
+    const productos = await Producto.find({});
+
+    productos.forEach(async (producto) => {
+      producto.tallas.forEach((talla) => {
+        talla.posicion.forEach((pos) => {
+          pos.py += n;
+
+          
+          if (pos.py > 10) {
+            pos.py = (pos.py % 10) || 10;// Reinicia py a 1 si excede 10
+          }
+        });
+      });
+
+      await producto.save();
+    });
+
+    res.status(200).json({ message: `Se actualizaron las posiciones correctamente.` });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error al actualizar posiciones' });
+  }
+
+  // try {
+  //   const result = await Producto.updateMany(
+  //     {}, // Filtro vacío para seleccionar todos los documentos
+  //     { $inc: { 'tallas.$[].posicion.$[].py': n } } // Incrementa el campo 'tallas.posicion.py' por n
+  //   );
+
+  //   res.json({ message: `Se actualizaron ${result.modifiedCount} documentos` });
+  // } catch (error) {
+  //   console.error(error);
+  //   res.status(500).json({ message: 'Error al actualizar posiciones' });
+  // }
+};
+
 
 
 module.exports = {
@@ -134,5 +180,6 @@ module.exports = {
   crearProducto,
   actualizarProducto,
   borrarProducto,
-  buscarProducto
+  buscarProducto,
+  actualizarPTalla
 };

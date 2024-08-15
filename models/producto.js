@@ -40,20 +40,36 @@ const ProductoSchema = new mongoose.Schema({
                     default: false,
                     required: false,
                 },
-            },
-        ],
-        required: true,
-    },
-     posicion: {
-        type: [
-            {
-                posx: {
-                    type: String,
-                    required: true,
-                    
+                existencia: {
+                    type: Boolean,
+                    default: true,
+                    required: true
                 },
-                posy: {
-                    type: String,
+                inEstante: {
+                    type: Boolean,
+                    default: true,
+                    required: true
+                },
+                cantidad:{
+                    type: Number,
+                    default:1,
+                    required:true
+                },
+                posicion: {
+                    type: [
+                        {
+                            px: {
+                                type: Number,
+                                default: 0,
+                                required: true,
+                            },
+                            py: {
+                                type: Number,
+                                default: 0,
+                                required: true,
+                            },
+                        },
+                    ],
                     required: true,
                 },
             },

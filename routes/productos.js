@@ -4,7 +4,7 @@ const { validarCampos } = require("../middlewares/validar-campos");
 const { validarJWT, esAdminRole } = require("../middlewares");
 
 const { existeCategoria, existeProducto, yaExisteProducto } = require("../helpers/db-validators");
-const { obtenerProductos, obtenerProducto, crearProducto, actualizarProducto, borrarProducto, buscarProducto } = require("../controllers/productos");
+const { obtenerProductos, obtenerProducto, crearProducto, actualizarProducto, borrarProducto, buscarProducto, actualizarPTalla } = require("../controllers/productos");
 
 const router = Router();
 
@@ -51,5 +51,15 @@ router.delete("/:id",[
     check('id').custom( existeProducto ),
     validarCampos
 ], borrarProducto);
+
+
+//Actualizar Posiciones
+router.put("/update-positions/:x", actualizarPTalla);
+
+
+
+
+
+
 
 module.exports = router;

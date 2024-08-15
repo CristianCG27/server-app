@@ -14,10 +14,11 @@ class Server {
       buscar:     '/api/buscar',
       categorias: '/api/categorias',
       productos:  '/api/productos',
+      tallas:     '/api/productos/tallas',
       usuarios:   '/api/usuarios',
       uploads:    '/api/uploads',
       ordenes:    '/api/ordenes',
-      carro:    '/api/carro',
+      carro:      '/api/carro',
       //busProducto:'/api/productos/buscar' 
       
 
@@ -66,6 +67,7 @@ class Server {
     this.app.use(this.paths.buscar, require("../routes/buscar"));
     this.app.use(this.paths.categorias, require("../routes/categorias"));
     this.app.use(this.paths.productos, require("../routes/productos"));
+    this.app.use(this.paths.tallas, require("../routes/productos/tallas"));
     this.app.use(this.paths.usuarios, require("../routes/usuarios"));
     this.app.use(this.paths.uploads, require("../routes/uploads"));
     this.app.use(this.paths.ordenes, require("../routes/ordenes"));
