@@ -159,6 +159,7 @@ const actualizarPTalla = async (req, res = response) => {
     res.status(500).json({ message: 'Error al actualizar posiciones' });
   }
 
+
   // try {
   //   const result = await Producto.updateMany(
   //     {}, // Filtro vacío para seleccionar todos los documentos
@@ -172,6 +173,103 @@ const actualizarPTalla = async (req, res = response) => {
   // }
 };
 
+const venderTalla = async (req, res = response) => {
+  try {
+    const { id, idTalla } = req.params;
+    
+    const producto = await Producto.findById(id);
+    const talla = producto.tallas.id(idTalla);
+
+    if (talla.cantidad > 0) {
+      talla.cantidad -= 1;
+      
+      if (talla.cantidad === 0) {
+        talla.inEstante = false;
+        talla.existencia = false;
+      }
+
+      const allTallasSoldOut = producto.tallas.every((t) => t.cantidad === 0);
+      if (allTallasSoldOut) {
+        producto.estado = false;
+      }
+
+      await producto.save();
+      res.status(200).json({ message: 'Producto vendido exitosamente.' });
+    } else {
+      res.status(400).json({ message: 'Cantidad insuficiente.' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error al vender producto.' });
+  }
+  
+};
+
+
+const anaquelTalla = async (req, res = response) => {
+  try {
+    const { id, idTalla, inEstante } = req.body;
+    
+    const producto = await Producto.findById(id);
+    const talla = producto.tallas.id(idTalla);
+
+
+    talla.inEstante = inEstante;
+    
+    await producto.save();
+    res.json({message: `Anaquel Actualizado`})
+
+  } catch (error) {
+    res.status(500).json({ message: 'Error al actualizar anaquel' });
+  }
+  
+};
+
+const sincronizar = async (req, res = response) => {
+    const { id, idTalla } = req.params;
+    const producto = await Producto.findById(id);
+    const talla = producto.tallas.id(idTalla);
+
+    console.log(talla);
+
+    posy = talla.posicion[0].py
+    //console.log(posy);
+
+    n = (11 - posy);
+
+    //console.log(n);
+
+
+
+    if (n === 10) {
+      return res.status(200).json({ message: 'No se realizaron cambios ya que n es 10.' });
+    }
+  
+    try {
+      const productos = await Producto.find({});
+  
+      productos.forEach(async (producto) => {
+        producto.tallas.forEach((talla) => {
+          talla.posicion.forEach((pos) => {
+            pos.py += n;
+  
+            
+            if (pos.py > 10) {
+              pos.py = (pos.py % 10) || 10;// Reinicia py a 1 si excede 10
+            }
+          });
+        });
+  
+        await producto.save();
+      });
+  
+      res.status(200).json({ message: `Se actualizaron las posiciones correctamente.` });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error al actualizar posiciones' });
+    }
+  
+};
+
 
 
 module.exports = {
@@ -181,5 +279,8 @@ module.exports = {
   actualizarProducto,
   borrarProducto,
   buscarProducto,
-  actualizarPTalla
+  actualizarPTalla,
+  venderTalla,
+  anaquelTalla,
+  sincronizar
 };
