@@ -31431,7 +31431,7 @@ b_f(a){return a},
 b21(a){return a},
 aGE(){var s=$.zM(),r=s.Cp$
 r===$&&A.a()
-r.sK5("http://localhost:8080/api")
+r.sK5("https://node-restserver-copy-1-production.up.railway.app/api")
 s=s.Cp$
 r=A.cF(J.bj($.rq.aQ().a,"token"))
 s.sa_B(0,A.au(["x-token",r==null?"":r],t.N,t.z))},
