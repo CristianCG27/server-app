@@ -18,13 +18,7 @@ class Server {
       uploads:    '/api/uploads',
       ordenes:    '/api/ordenes',
       carro:      '/api/carro',
-      //busProducto:'/api/productos/buscar' 
-      
-
     }
-
-    // this.usuariosPath = '/api/usuarios';
-    // this.authPath = '/api/auth';
 
     //*Conectar a base de datos
     this.conectarDB();

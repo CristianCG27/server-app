@@ -53,7 +53,7 @@ router.post(
   crearProducto
 );
 
-//Actualizar registro por ID - privado
+//Actualizar registro por ID 
 router.put(
   "/:id",
   [
